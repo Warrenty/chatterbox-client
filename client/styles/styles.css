@@ -64,6 +64,13 @@ form input[type=text] {
     height: 300px;
     overflow: auto;
 }
+.roomname {
+    float: right;
+}
+
+.friends {
+    font-weight: bold;
+}
 
 .chat {
     padding: 5px;

@@ -1,10 +1,10 @@
 // YOUR CODE HERE:
 var app = {
-  init: function(){app.fetch(function(data){
-        console.log(data);
+  init: function(filter){app.fetch(function(data){
           for(var i=data.length-1; i>=0; i--){
-            console.log(data[i]);
-            app.addMessage(data[i]);
+            if(filter===undefined || data[i].roomname === filter){
+              app.addMessage(data[i]);
+            }
           }
         })},
   send: function(message){
@@ -36,15 +36,16 @@ var app = {
     $('#chats').html('');
   },
   addMessage: function(message){
-    console.log(message);
     var $chat = $('<div class = "chat"></div>');
-    $chat.append('<span class="username">'+ message.username +'</span><span class="roomname">' + message.roomname + '</span><span>'+ message.createdAt +'</span><div class="text">'+ message.text +'</div>');
+    if (_.contains(friends,message.username)){
+      $chat.addClass('friends');
+    }
+    $chat.append('<span class="username">'+ message.username +'</span><span class="roomname">' + message.roomname + '</span><div class="text">'+ message.text +'</div>');
     if (message.text !== undefined && message.username && message.roomname &&
       message.text[0]!=='<' &&
       message.roomname[0]!=='<' &&
       message.username[0]!=='+'){
       $('#chats').prepend($chat);
-      // console.log($chat);
     }
   },
   addRoom: function(roomName){
@@ -55,6 +56,32 @@ var app = {
     app.fetch();
   }
 };
+/////////////////////////////////////////////////////////////////
+var room;
+var friends = [];
+
+var refresh = function(filter){
+  app.clearMessages();
+  app.init(filter);
+};
+
+setInterval(function(){refresh(room)},2000);
+
+$(document).ready(function(){
+  app.init();
+  $('button').on('click',function(){
+    room = $('#roomname').val()
+    app.send(
+      {username:$('#username').val(), text:$('#text').val(), roomname: room}
+      );
+  });
+  $(document).on('click','.username',function(){
+    friends.push($(this).text());
+  })
+});
+
+
+
 
 $('#main').on('click','.username',app.addFriend());
 
