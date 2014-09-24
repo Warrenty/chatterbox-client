@@ -57,12 +57,20 @@ var app = {
 var room;
 var friends = [];
 
-var refresh = function(filter){
-  app.clearMessages();
-  app.init(filter);
+var addNewMessages = function(data){
+  for(var i = 0; i < data.length; i++){
+    if(+new Date(data[i].createdAt) > Date.now()-1000)
+      app.addMessage(data[i]);
+  }
 };
 
-setInterval(function(){refresh(room)},2000);
+var refresh = function(filter){
+  app.fetch(addNewMessages);
+  // app.clearMessages();
+  // app.init(filter);
+};
+
+setInterval(function(){refresh(room)},1000);
 
 $(document).ready(function(){
   app.init();
@@ -74,6 +82,7 @@ $(document).ready(function(){
   });
   $(document).on('click','.username',function(){
     friends.push($(this).text());
+    app.init();
   })
 });
 
