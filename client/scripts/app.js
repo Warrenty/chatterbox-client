@@ -40,13 +40,10 @@ var app = {
     if (_.contains(friends,message.username)){
       $chat.addClass('friends');
     }
-    $chat.append('<span class="username">'+ message.username +'</span><span class="roomname">' + message.roomname + '</span><div class="text">'+ message.text +'</div>');
-    if (message.text !== undefined && message.username && message.roomname &&
-      message.text[0]!=='<' &&
-      message.roomname[0]!=='<' &&
-      message.username[0]!=='+'){
-      $('#chats').prepend($chat);
-    }
+    $chat.append($('<span class="username"></span>').text(message.username));
+    $chat.append($('<span class="roomname"></span>').text(message.roomname));
+    $chat.append($('<div class="text"></div>').text(message.text));
+    $('#chats').prepend($chat);
   },
   addRoom: function(roomName){
     $('#roomSelect').append('<div></div>');
