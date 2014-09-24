@@ -82,6 +82,7 @@ $(document).ready(function(){
   });
   $(document).on('click','.username',function(){
     friends.push($(this).text());
+    app.clearMessages();
     app.init();
   })
 });
